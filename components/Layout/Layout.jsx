@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineHeart } from "react-icons/ai";
 import { FiFolder, FiMessageSquare, FiShoppingCart } from "react-icons/fi";
 import { HiMenuAlt3 } from "react-icons/hi";
@@ -35,6 +35,24 @@ const Layout = ({ children, setColor }) => {
         ]
     }
     const [open, setOpen] = useState(true);
+    const [width, setWidth] = useState();
+
+    function handleWindowSizeChange() {
+        setWidth(window.innerWidth);
+        const isMobile = width <= 768;
+    }
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, []);
+
+    useEffect(()=>{
+       if(window.innerWidth < 768){
+        setOpen(false)
+       }
+    },[])
 
     const mode = [
         {
@@ -54,7 +72,7 @@ const Layout = ({ children, setColor }) => {
         <div className="lg:flex gap-6 bg-fill">
             {/* ======================= Side bar =========================== */}
             <div
-                className={`${open ? "lg:w-1/6 w-screen min-h-screen" : "lg:w-10 w-full lg:min-h-screen"
+                className={`${open ? "lg:w-1/6 w-screen min-h-screen " : "lg:w-10 w-full lg:min-h-screen"
                     } duration-500 bg-base px-0.5 shadow-lg flex flex-col justify-between`}
             >
                 <div>
