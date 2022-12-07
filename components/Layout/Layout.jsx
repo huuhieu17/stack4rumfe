@@ -9,14 +9,16 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { FaSignInAlt } from "react-icons/fa"
 import * as Tabs from "@radix-ui/react-tabs";
 import { Badge, cx, Icon } from "@vechaiui/react";
+import { useRouter } from 'next/router';
 
 const Layout = ({ children, setColor }) => {
     const isAuthenticate = false;
+    const router = useRouter();
     let menus = [
         { name: "Explore", link: "/", icon: MdOutlineExplore },
         { name: "Categories", link: "/categories", icon: MdOutlineCategory },
         { name: "Contact", link: "/contact", icon: MdContactSupport },
-        { name: "SignIn / SignUp", link: "/", icon: FaSignInAlt, margin: true },
+        { name: "SignIn / SignUp", link: "/auth/sign-in", icon: FaSignInAlt, margin: true },
 
     ];
     if (isAuthenticate) {
@@ -49,11 +51,11 @@ const Layout = ({ children, setColor }) => {
         },
     ];
     return (
-        <div className="lg:flex gap-6">
+        <div className="lg:flex gap-6 bg-fill">
             {/* ======================= Side bar =========================== */}
             <div
                 className={`${open ? "lg:w-1/6 w-screen min-h-screen" : "lg:w-10 w-full lg:min-h-screen"
-                    } duration-500 bg-fill px-0.5 shadow-lg flex flex-col justify-between`}
+                    } duration-500 bg-base px-0.5 shadow-lg flex flex-col justify-between`}
             >
                 <div>
                     <div className="p-2 flex justify-between">
@@ -70,21 +72,21 @@ const Layout = ({ children, setColor }) => {
                                 href={menu?.link}
                                 key={i}
                                 className={` ${menu?.margin && "mt-5"
-                                    } group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-primary-50 hover:text-neutral-800 rounded-md`}
+                                    } group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-primary-500 ${open ? 'hover:text-neutral-100' : ''} hover:rounded-md ${(menu.link !== '/') ? router.asPath.includes(menu.link) && 'border-r-2 border-primary-500' : (router.asPath === menu.link || router.asPath === '') && 'border-r-2 border-primary-500' }`}
                             >
                                 <div>{React.createElement(menu?.icon, { size: "20" })}</div>
                                 <h2
                                     style={{
                                         transitionDelay: `${i + 1}00ms`,
                                     }}
-                                    className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"
+                                    className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28  overflow-hidden"
                                         }`}
                                 >
                                     {menu?.name}
                                 </h2>
                                 <h2
                                     className={`${open && "hidden"
-                                        } absolute left-40 font-semibold whitespace-pre rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:text-primary-50 group-hover:py-1 group-hover:left-10 group-hover:duration-300 group-hover:w-fit  `}
+                                        } absolute left-40 font-semibold whitespace-pre rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:text-neutral-800 group-hover:py-1 group-hover:left-10 group-hover:duration-300 group-hover:w-fit  `}
                                 >
                                     {menu?.name}
                                 </h2>
@@ -111,13 +113,12 @@ const Layout = ({ children, setColor }) => {
                                     className={cx(
                                         "px-4 py-2 -mb-px text-sm text-center whitespace-nowrap cursor-base flex w-full focus:outline-none",
                                         "flex-row inline-block",
-                                        "text-neutral-600 bg-transparent border border-transparent",
-                                        "hover:text-neutral-900",
-                                        "selected:bg-base selected:text-neutral-900 selected:rounded-tl-md selected:rounded",
+                                        " bg-transparent border border-transparent",
+                                        "selected:bg-base text-neutral-300 selected:text-neutral-900 selected:rounded-tl-md selected:rounded",
                                         // dark
-                                        "dark:text-neutral-400 dark:bg-transparent",
+                                        "dark:text-neutral-100 dark:bg-transparent",
                                         "dark:hover:text-neutral-100",
-                                        "dark:selected:bg-base dark:selected:text-neutral-100",
+                                        "dark:selected:bg-base",
                                     )}
                                 >
                                     <Icon as={tab.icon} label={tab.label} className="w-4 h-4 mr-2" />
@@ -132,7 +133,7 @@ const Layout = ({ children, setColor }) => {
                 </div>
             </div>
             {/* ======================= Content ============================ */}
-            <div className={`${open && 'lg:block hidden'} bg-base m-3 text-xl font-semibold w-full`}>
+            <div className={`${open && 'lg:block hidden'} min-h-screen overflow-y-auto box-border w-full`}>
                 {children}
             </div>
         </div>

@@ -5,7 +5,7 @@ import "../styles/globals.css";
 import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps }) {
-  const [color, setColor] = useState('bee')
+  const [color, setColor] = useState('light')
   const theme = extendTheme({
     cursor: "pointer",
     colorSchemes: {
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
   }, [])
   
   return (
-    <VechaiProvider density="compact" theme={theme} colorScheme={color}>
+    <VechaiProvider theme={theme} colorScheme={color}>
       <Layout setColor={setColor}>
         <Component {...pageProps} />
       </Layout>

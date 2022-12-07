@@ -19,6 +19,16 @@ a {
   box-sizing: border-box;
 }
 
+html::-webkit-scrollbar {
+  width: 6px;
+  background-color: #F5F5F5;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: #18181B;
+}
+
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -28,3 +38,4 @@ a {
     background: black;
   }
 }
+
