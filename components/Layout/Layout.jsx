@@ -36,10 +36,11 @@ const Layout = ({ children, setColor }) => {
     }
     const [open, setOpen] = useState(true);
     const [width, setWidth] = useState();
+    const isMobile = width <= 768;
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
-        const isMobile = width <= 768;
+
     }
     useEffect(() => {
         window.addEventListener('resize', handleWindowSizeChange);
@@ -73,7 +74,7 @@ const Layout = ({ children, setColor }) => {
             {/* ======================= Side bar =========================== */}
             <div
                 className={`${open ? "lg:w-1/6 w-screen min-h-screen " : "lg:w-10 w-full lg:min-h-screen"
-                    } duration-500 bg-base px-0.5 shadow-lg flex flex-col justify-between`}
+                    } lg:relative fixed top-0 duration-500 bg-base px-0.5 shadow-lg flex flex-col justify-between`}
             >
                 <div>
                     <div className="p-2 flex justify-between">
@@ -89,6 +90,11 @@ const Layout = ({ children, setColor }) => {
                             <Link
                                 href={menu?.link}
                                 key={i}
+                                onClick={()=>{
+                                    if(isMobile){
+                                        setOpen(false)
+                                    }
+                                }}
                                 className={` ${menu?.margin && "mt-5"
                                     } group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-primary-500 ${open ? 'hover:text-neutral-100' : ''} hover:rounded-md ${(menu.link !== '/') ? router.asPath.includes(menu.link) && 'border-r-2 border-primary-500' : (router.asPath === menu.link || router.asPath === '') && 'border-r-2 border-primary-500' }`}
                             >
@@ -151,7 +157,7 @@ const Layout = ({ children, setColor }) => {
                 </div>
             </div>
             {/* ======================= Content ============================ */}
-            <div className={`${open && 'lg:block hidden'} min-h-screen overflow-y-auto box-border w-full`}>
+            <div className={`${open && 'lg:block hidden'} lg:mt-0 mt-10 min-h-screen overflow-y-auto box-border w-full`}>
                 {children}
             </div>
         </div>
